@@ -1,19 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Better Instagram</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Better Instagram</title>
+  <style>
+    .container {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 50px;
+    }
+
+    .drag-item {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .drag-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
 </head>
 <body>
-    <div id="div1" class="draggable" draggable="true"></div>
-    <div id="div2" class="draggable" draggable="true"></div>
-    <div id="div3" class="draggable" draggable="true"></div>
-    <div id="div4" class="draggable" draggable="true"></div>
-    <div id="div5" class="draggable" draggable="true"></div>
-    <div id="div6" class="draggable" draggable="true"></div>
+  <div class="container">
+    <div id="drag1" class="drag-item" draggable="true">
+      <img src="image1.jpg" alt="Image 1">
+    </div>
+    <div id="drag2" class="drag-item" draggable="true">
+      <img src="image2.jpg" alt="Image 2">
+    </div>
+    <div id="drag3" class="drag-item" draggable="true">
+      <img src="image3.jpg" alt="Image 3">
+    </div>
+    <div id="drag4" class="drag-item" draggable="true">
+      <img src="image4.jpg" alt="Image 4">
+    </div>
+    <div id="drag5" class="drag-item" draggable="true">
+      <img src="image5.jpg" alt="Image 5">
+    </div>
+    <div id="drag6" class="drag-item" draggable="true">
+      <img src="image6.jpg" alt="Image 6">
+    </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script>
+    const items = document.querySelectorAll('.drag-item');
+    let draggedItem = null;
+
+    items.forEach(item => {
+      item.addEventListener('dragstart', () => {
+        draggedItem = item;
+        setTimeout(() => item.style.display = 'none', 0);
+      });
+
+      item.addEventListener('dragend', () => {
+        setTimeout(() => {
+          draggedItem.style.display = 'block';
+          draggedItem = null;
+        }, 0);
+      });
+
+      item.addEventListener('dragover', e => e.preventDefault());
+
+      item.addEventListener('dragenter', e => {
+        e.preventDefault();
+        item.style.border = '2px dashed #000';
+      });
+
+      item.addEventListener('dragleave', () => item.style.border = '2px solid #333');
+
+      item.addEventListener('drop', () => {
+        item.style.border = '2px solid #333';
+        if (draggedItem !== item) {
+          let draggedItemContent = draggedItem.innerHTML;
+          draggedItem.innerHTML = item.innerHTML;
+          item.innerHTML = draggedItemContent;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
